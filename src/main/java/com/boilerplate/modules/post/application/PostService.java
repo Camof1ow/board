@@ -58,4 +58,15 @@ public class PostService {
 
 		return ResponseDto.success(true);
 	}
+
+	public ResponseDto<String> blindPost(Long postId) {
+		Post post = postRepository.findById(postId).orElseThrow(
+			() -> new CustomException(ErrorCode.POST_NOT_FOUND)
+		);
+
+		post.blindPost(false);
+		postRepository.save(post);
+
+		return ResponseDto.success(postId+"번 게시글 블라인드 처리완료");
+	}
 }

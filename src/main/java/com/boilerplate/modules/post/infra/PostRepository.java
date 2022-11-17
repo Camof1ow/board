@@ -11,4 +11,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 	Optional<Post> findById(Long id);
 
 	List<Post> findAllByActivatedAndBoard(Boolean activated, Board board);
+
+	List<Post> findTop10ByCreatedAt();
 }

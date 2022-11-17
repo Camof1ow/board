@@ -32,4 +32,9 @@ public class PostController {
 		@AuthenticationPrincipal UserDetailsImpl userDetails){
 		return postService.postBoard(boardId, requestDto, userDetails);
 	}
+
+	@GetMapping("/api/admin/post/{postId}")
+	public ResponseDto<String> blindPost(@PathVariable Long postId){
+		return postService.blindPost(postId);
+	}
 }

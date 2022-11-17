@@ -50,5 +50,9 @@ public class Post extends Timestamped {
 
 	private Boolean activated;
 
+	public void blindPost(Boolean activated){
+		this.activated = activated;
+	}
+
 
 }
