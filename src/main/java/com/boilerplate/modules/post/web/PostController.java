@@ -3,10 +3,12 @@ package com.boilerplate.modules.post.web;
 import com.boilerplate.modules.account.application.response.ResponseDto;
 import com.boilerplate.modules.post.application.PostService;
 import com.boilerplate.modules.post.application.request.PostRequestDto;
+import com.boilerplate.modules.post.application.response.LatestPostResponseDto;
 import com.boilerplate.modules.post.application.response.PostResponseDto;
 import com.boilerplate.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,5 +39,12 @@ public class PostController {
 	@GetMapping("/api/admin/post/{postId}")
 	public ResponseDto<String> blindPost(@PathVariable Long postId){
 		return postService.blindPost(postId);
+	}
+
+
+	@Operation(summary = "최근 게시물 10건 조회", description = "게시글 10건을 최신순으로 가져옵니다.", tags = {"BoardController"})
+	@GetMapping("/api/post/top10")
+	public ResponseDto<List<LatestPostResponseDto>> getLatestTop10(){
+		return postService.getLatestTop10();
 	}
 }

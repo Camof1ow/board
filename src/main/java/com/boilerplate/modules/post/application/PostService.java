@@ -6,7 +6,9 @@ import com.boilerplate.modules.account.application.response.ResponseDto;
 import com.boilerplate.modules.board.domain.Board;
 import com.boilerplate.modules.board.infra.BoardRepository;
 import com.boilerplate.modules.post.application.request.PostRequestDto;
+import com.boilerplate.modules.post.application.response.LatestPostResponseDto;
 import com.boilerplate.modules.post.application.response.PostResponseDto;
+import com.boilerplate.modules.post.domain.Comment;
 import com.boilerplate.modules.post.domain.Post;
 import com.boilerplate.modules.post.infra.PostRepository;
 import com.boilerplate.security.UserDetailsImpl;
@@ -67,6 +69,32 @@ public class PostService {
 		post.blindPost(false);
 		postRepository.save(post);
 
-		return ResponseDto.success(postId+"번 게시글 블라인드 처리완료");
+		return ResponseDto.success(postId + "번 게시글 블라인드 처리완료");
 	}
+
+	public ResponseDto<List<LatestPostResponseDto>> getLatestTop10() {
+		List<Post> postList = postRepository.findTop10ByOrderByCreatedAt();
+		List<LatestPostResponseDto> latestPost = new ArrayList<>();
+
+		for (Post post : postList) {
+			latestPost.add(LatestPostResponseDto.builder()
+				.by(post.getWriter().getNickname())
+				.descendants((long) post.getComments().size())
+				.time(post.getCreatedAt())
+				.id(post.getId())
+				.kids(commentIdList(post.getComments()))
+				.title(post.getTitle())
+				.build());
+		}
+		return ResponseDto.success(latestPost);
+	}
+
+	public List<Long> commentIdList(List<Comment> commentList) {
+		List<Long> idList = new ArrayList<>();
+		for (Comment comment : commentList) {
+			idList.add(comment.getId());
+		}
+		return idList;
+	}
+
 }
