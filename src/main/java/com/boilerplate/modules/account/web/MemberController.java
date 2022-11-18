@@ -69,11 +69,13 @@ public class MemberController {
         return memberService.testSignup();
     }
 
+    @Operation(summary = "회원 랭킹 집계", description = "회원 포인트를 기준으로 랭킹을 집계합니다.", tags = {"MemberController"})
     @GetMapping("/api/test/ranking")
     public ResponseDto<Boolean> testRanking(){
         return memberService.testRanking();
     }
 
+    @Operation(summary = "회원 랭킹 보기", description = "회원 id로 회원의 랭킹을 가져옵니다.", tags = {"MemberController"})
     @GetMapping("/api/test/ranking/{id}")
     public ResponseDto<RankingResponseDto> testRankingById(@PathVariable Long id){
         return memberService.testRankingById(id);
