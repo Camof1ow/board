@@ -18,9 +18,12 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+@Component
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -187,6 +190,7 @@ public class MemberService {
 		return ResponseDto.success(true);
 	}
 
+
 	public ResponseDto<Boolean> testRanking() {
 		long beforeTime =System.currentTimeMillis();
 		memberRepository.saveAllRanking();
@@ -212,5 +216,11 @@ public class MemberService {
 			.stream()
 			.map(member -> modelMapper.map(member, MemberResponseDto.class))
 			.collect(Collectors.toList()));
+	}
+
+	@Scheduled(cron = "0 30 0 * * ?")
+	public void saveRanking(){
+		memberRepository.saveAllRanking();
+
 	}
 }
